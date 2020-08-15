@@ -1,0 +1,74 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://sprites/dizzy.png" type="Texture" id=1]
+[ext_resource path="res://sprites/vessels/chicken.png" type="Texture" id=2]
+[ext_resource path="res://scripts/vessels/chicken.gd" type="Script" id=3]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 5.00412
+height = 3.11211
+
+[sub_resource type="Animation" id=3]
+resource_name = "dizzy"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("dizzy:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "idle"
+length = 0.6
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("CollisionShape2D/Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
+
+[node name="chicken" type="KinematicBody2D"]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource( 3 )
+
+[node name="dizzy" type="Sprite" parent="."]
+modulate = Color( 0.917647, 0.878431, 0.447059, 1 )
+position = Vector2( 0, -25 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 1 )
+hframes = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 1 )
+scale = Vector2( 2, 2 )
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="CollisionShape2D"]
+position = Vector2( 0, -1 )
+texture = ExtResource( 2 )
+hframes = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+anims/dizzy = SubResource( 3 )
+anims/idle = SubResource( 2 )
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
