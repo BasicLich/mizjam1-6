@@ -4,7 +4,7 @@
 [ext_resource path="res://sprites/vessels/chicken.png" type="Texture" id=2]
 [ext_resource path="res://scripts/vessels/chicken.gd" type="Script" id=3]
 [ext_resource path="res://sounds/chicken.wav" type="AudioStream" id=4]
-[ext_resource path="res://sprites/circle.png" type="Texture" id=5]
+[ext_resource path="res://sprites/scared.png" type="Texture" id=6]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 5.00412
@@ -52,11 +52,18 @@ script = ExtResource( 3 )
 
 [node name="dizzy" type="Sprite" parent="."]
 visible = false
-modulate = Color( 0.917647, 0.878431, 0.447059, 1 )
+modulate = Color( 1, 1, 0, 1 )
 position = Vector2( 0, -25 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 1 )
 hframes = 4
+
+[node name="scared" type="Sprite" parent="."]
+visible = false
+modulate = Color( 1, 0, 1, 1 )
+position = Vector2( 0, -15 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 1 )
@@ -85,10 +92,4 @@ shape = SubResource( 4 )
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 4 )
-
-[node name="circle" type="Sprite" parent="."]
-visible = false
-modulate = Color( 1, 1, 1, 0.392157 )
-scale = Vector2( 5, 5 )
-texture = ExtResource( 5 )
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

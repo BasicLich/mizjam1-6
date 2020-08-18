@@ -33,6 +33,7 @@ func _ready():
 func _physics_process(delta):
 	$dizzy.visible = state == Game.DIZZY
 	$curious.visible = state == Game.CURIOUS
+	$scared.visible = state == Game.SCARED
 	
 	match state:
 		Game.POSSESSED:
@@ -43,6 +44,8 @@ func _physics_process(delta):
 			idle()
 		Game.CURIOUS:
 			curious()
+		Game.SCARED:
+			scared()
 	pass
 
 func idle():
@@ -64,7 +67,6 @@ func dizzy(delta):
 func possessed(delta):
 	$CollisionShape2D/Sprite.flip_h = not get_global_mouse_position().x > get_global_position().x
 	$AnimationPlayer.play("idle")
-	$Line2D.visible = state != Game.POSSESSED
 	
 	#MOVE
 	move = Vector2(0,0)
@@ -88,9 +90,6 @@ func curious():
 		path.remove(0)
 	if len(path) == 0:
 		state = Game.IDLE
-	$Line2D.global_position = Vector2(0,0)
-	$Line2D.points = path
-	get_node("Line2D").points = path
 	pass
 
 func _on_Timer_timeout():
@@ -100,8 +99,26 @@ func _on_Timer_timeout():
 		$Timer.wait_time = randf()*1
 	pass # Replace with function body.
 
+
+func scared():
+	move_and_slide((path[0]-global_position).normalized()*speed)
+	if path[0].distance_to(global_position) <= 32:
+		path.remove(0)
+	if len(path) == 0:
+		Game.get_main().get_node("church").spawn_priest()
+		state = Game.IDLE
+	
 func get_curious(where):
 	if state == Game.IDLE or state == Game.CURIOUS:
 		state = Game.CURIOUS
-		path = Game.get_main().get_node("Navigation2D").get_simple_path(global_position, where, false)
+		if path.size() > 0:
+			if path[-1].distance_to(global_position) > where.distance_to(global_position):
+				path = Game.get_main().get_node("Navigation2D").get_simple_path(global_position, where, false)
+		else:
+			path = Game.get_main().get_node("Navigation2D").get_simple_path(global_position, where, false) 
 
+
+func be_scared():
+	if state == Game.IDLE or state == Game.CURIOUS:
+		state = Game.SCARED
+		path = Game.get_main().get_node("Navigation2D").get_simple_path(global_position, Game.get_main().get_node("church").global_position, false)

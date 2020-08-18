@@ -17,6 +17,8 @@ var state = Game.IDLE
 
 var path = PoolVector2Array()
 
+const scaredDelay = 4
+var scaredTimer = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -33,6 +35,8 @@ func _ready():
 func _physics_process(delta):
 	$dizzy.visible = state == Game.DIZZY
 	$curious.visible = state == Game.CURIOUS
+	$scared.visible = state == Game.SCARED
+	$angry.visible = state == Game.ANGRY
 	
 	if global_position.distance_to(Game.get_player().global_position) <= 320 and (state == Game.IDLE or state == Game.CURIOUS):
 		state = Game.ANGRY
@@ -49,6 +53,8 @@ func _physics_process(delta):
 			curious()
 		Game.ANGRY:
 			angry()
+		Game.SCARED:
+			scared(delta)
 	pass
 
 func idle():
@@ -70,7 +76,6 @@ func dizzy(delta):
 func possessed(delta):
 	$CollisionShape2D/Sprite.flip_h = not get_global_mouse_position().x > get_global_position().x
 	$AnimationPlayer.play("idle")
-	$Line2D.visible = state != Game.POSSESSED
 	
 	
 	#MOVE
@@ -93,9 +98,6 @@ func curious():
 	move_and_slide((path[0]-global_position).normalized()*speed)
 	if path[0].distance_to(global_position) <= 32:
 		path.remove(0)
-	$Line2D.global_position = Vector2(0,0)
-	$Line2D.points = path
-	get_node("Line2D").points = path
 	pass
 
 func angry():
@@ -103,25 +105,43 @@ func angry():
 		move_and_slide((path[0]-global_position).normalized()*speed)
 		if path[0].distance_to(global_position) <= 32:
 			path.remove(0)
-	$Line2D.global_position = Vector2(0,0)
-	$Line2D.points = path
-	get_node("Line2D").points = path
+
+func scared(delta):
+	$CollisionShape2D/Sprite.flip_h = move.x < 0
+	
+	scaredTimer = clamp(scaredTimer - delta, 0, scaredDelay)
+	if scaredTimer == 0:
+		state = Game.ANGRY
+	
+	move = move*0.99
+	move_and_slide(move)
+	
 
 func _on_Timer_timeout():
 	#NPC MOVEMENT
 	if state != Game.POSSESSED:
-		move = Vector2(((randf()-0.5)*2), ((randf()-0.5)*2)).normalized()*speed
-		$Timer.wait_time = randf()*1
-	if state == Game.ANGRY:
-		path = Game.get_main().get_node("Navigation2D").get_simple_path(global_position, Game.get_player().global_position, false)
-		$Timer.wait_time = randf()*2
-		cast_fireball(Game.get_player().global_position)
+		if state == Game.ANGRY:
+			path = Game.get_main().get_node("Navigation2D").get_simple_path(global_position, Game.get_player().global_position, false)
+			$Timer.wait_time = 1 + randf()/2
+			cast_fireball(Game.get_player().global_position)
+		elif state == Game.SCARED:
+			move = Vector2(((randf()-0.5)*2), ((randf()-0.5)*2)).normalized()*speed*4
+			$Timer.wait_time = randf()/2
+		else:
+			move = Vector2(((randf()-0.5)*2), ((randf()-0.5)*2)).normalized()*speed
+			$Timer.wait_time = randf()*1
 	pass # Replace with function body.
 
 func get_curious(where):
 	if state == Game.IDLE or state == Game.CURIOUS:
 		state = Game.CURIOUS
 		path = Game.get_main().get_node("Navigation2D").get_simple_path(global_position, where, false)
+
+func be_scared():
+	if state == Game.IDLE:
+		scaredTimer = scaredDelay
+		state = Game.SCARED
+		$Timer.start(0.1)
 
 func cast_fireball(target):
 	var fireball = load("res://scenes/others/fireball.tscn").instance()

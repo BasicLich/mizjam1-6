@@ -18,7 +18,6 @@ func _process(delta):
 
 
 func _on_fireball_body_entered(body):
-	if body.name != dadName:
-		print(body.name)
+	if body.name != dadName and not body.is_in_group("mage"):
 		queue_free()
 	pass # Replace with function body.

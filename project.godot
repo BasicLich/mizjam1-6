@@ -17,6 +17,7 @@ _global_script_class_icons={
 
 config/name="MizJam1"
 run/main_scene="res://scenes/menu.tscn"
+boot_splash/bg_color=Color( 0.141176, 0.141176, 0.141176, 1 )
 config/icon="res://icon.png"
 
 [autoload]
@@ -47,5 +48,5 @@ space={
 
 [rendering]
 
-environment/default_clear_color=Color( 0.113725, 0.101961, 0.0784314, 1 )
+environment/default_clear_color=Color( 0.203922, 0.2, 0.196078, 1 )
 environment/default_environment="res://default_env.tres"
