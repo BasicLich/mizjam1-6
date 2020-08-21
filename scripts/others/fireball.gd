@@ -18,6 +18,10 @@ func _process(delta):
 
 
 func _on_fireball_body_entered(body):
-	if body.name != dadName and not body.is_in_group("mage"):
+	if body.name != dadName and not body.is_in_group("priest"):
+		if body.is_in_group("vessel") and body.state == Game.POSSESSED:
+			Game.get_player().depossess()
+		elif body == Game.get_player():
+			get_tree().quit()
 		queue_free()
 	pass # Replace with function body.

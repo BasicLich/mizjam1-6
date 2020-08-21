@@ -10,9 +10,6 @@ var speed = 100
 const abilityDelay = 1
 var abilityTimer = 0
 
-const dizzyDelay = 5
-var dizzyTimer = 0
-
 var state = Game.IDLE
 
 var path = PoolVector2Array()
@@ -20,17 +17,20 @@ var path = PoolVector2Array()
 const scaredDelay = 4
 var scaredTimer = 0
 
+var life = 5
+
+var color = Game.rand_color()
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	add_to_group("vessel")
-	add_to_group("mage")
+	add_to_group("alive")
+	add_to_group("human")
+	add_to_group("priest")
 	randomize()
 	pass # Replace with function body.
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
 
 func _physics_process(delta):
 	$dizzy.visible = state == Game.DIZZY
@@ -46,7 +46,7 @@ func _physics_process(delta):
 		Game.POSSESSED:
 			possessed(delta)
 		Game.DIZZY:
-			dizzy(delta)
+			dizzy()
 		Game.IDLE:
 			idle()
 		Game.CURIOUS:
@@ -65,12 +65,9 @@ func idle():
 	move_and_slide(move)
 	pass
 
-func dizzy(delta):
+func dizzy():
 	$AnimationPlayer.play("dizzy")
 	move = Vector2(0,0)
-	dizzyTimer = clamp(dizzyTimer - delta, 0, dizzyDelay)
-	if dizzyTimer <= 0:
-		state = Game.IDLE
 	pass
 
 func possessed(delta):
@@ -149,4 +146,23 @@ func cast_fireball(target):
 	fireball.look_at(target)
 	fireball.dadName = name
 	Game.get_main().add_child(fireball)
+	pass
+
+func die():
+	var headstone = load("res://scenes/others/headstone.tscn").instance()
+	headstone.name = "headstone" + name
+	headstone.global_position = global_position
+	Game.get_main().add_child(headstone)
+	if state != Game.DIZZY:
+		leave_soul()
+	Game.get_sacrifice().sacrifice(self)
+	queue_free()
+
+func leave_soul():
+	var soul = load("res://scenes/soul.tscn").instance()
+	soul.human = is_in_group("human")
+	soul.bodyName = name
+	soul.color = color
+	soul.global_position = global_position
+	Game.get_main().add_child(soul)
 	pass

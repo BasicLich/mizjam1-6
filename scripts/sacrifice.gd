@@ -2,35 +2,29 @@ extends Area2D
 
 
 # Declare member variables here. Examples:
-export var wanted = {"farmer": 1}
+export var wanted = {}
 
 var sacrificed = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	for key in wanted:
+		sacrificed[key] = 0
 	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	for body in get_overlapping_bodies():
-		if body.is_in_group("vessel"):
-			if body.state == Game.DIZZY:
-				var killed = false
-				for request in wanted:
-					if not killed:
-						if body.is_in_group(request):
-							if not sacrificed.has(request) or (sacrificed.has(request) and sacrificed[request] < wanted[request]):
-								killed = true
-								var soul = load("res://scenes/soul.tscn").instance()
-								soul.global_position = body.global_position
-								Game.get_main().add_child(soul)
-								body.queue_free()
-								if sacrificed.has(request):
-									sacrificed[request] += 1
-								else:
-									sacrificed[request] = 1
-	
 	if wanted.hash() == sacrificed.hash():
 		print("WIN")
 	pass
+
+func sacrifice(body):
+	if body.is_in_group("vessel") and get_overlapping_bodies().has(body):
+		var valid = false
+		for request in wanted:
+			if not valid:
+				if body.is_in_group(request):
+					if not sacrificed.has(request) or (sacrificed.has(request) and sacrificed[request] < wanted[request]):
+						valid = true
+						sacrificed[request] += 1

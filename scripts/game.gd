@@ -24,6 +24,11 @@ func _ready():
 func get_main():
 	return get_tree().current_scene
 
-
 func get_player():
 	return get_main().get_node("player")
+
+func get_sacrifice():
+	return get_main().get_node("sacrifice")
+
+func rand_color():
+	return Color(randf(),randf(),randf(),0.5)
