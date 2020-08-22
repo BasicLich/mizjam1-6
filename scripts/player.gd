@@ -4,8 +4,8 @@ extends KinematicBody2D
 # Declare member variables here. Examples:
 var move = Vector2()
 var dash = Vector2()
-var speed = 25
-var dashSpeed = 500
+var speed = 20
+var dashSpeed = 750
 
 const dashDelay = 1.5
 var dashTimer = 0
@@ -14,6 +14,9 @@ var possessing = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	var camera = load("res://scenes/camera.tscn").instance()
+	camera.global_position = global_position
+	Game.get_main().call_deferred("add_child", camera)
 	pass # Replace with function body.
 
 
@@ -42,13 +45,13 @@ func _physics_process(delta):
 			dashTimer = clamp(dashTimer - delta, 0, dashDelay)
 		
 		#MOVEMENT
-		if Input.is_action_pressed("mouseL"):
+		if Input.is_action_pressed("mouseR"):
 			if get_global_mouse_position().distance_to(get_global_position()) > 20:
 				move += (get_global_mouse_position() - get_global_position()).normalized() * speed
 		
 		#DASH
 		if dashTimer <= 0 and not $AnimationPlayer.current_animation == "scare":
-			if Input.is_action_just_pressed("mouseR"):
+			if Input.is_action_just_pressed("mouseL"):
 				dash = (get_global_mouse_position() - get_global_position()).normalized() * dashSpeed
 				dashTimer = dashDelay
 				for body in $PossessionArea.get_overlapping_bodies():
@@ -66,8 +69,8 @@ func _physics_process(delta):
 		
 		
 		#GOING THROUGH WALLS
-		set_collision_layer_bit(2, dash.length() <= 100 and not possessing)
-		set_collision_mask_bit(2, dash.length() <= 100 and not possessing)
+#		set_collision_layer_bit(1, dash.length() <= 100 and not possessing)
+#		set_collision_mask_bit(1, dash.length() <= 100 and not possessing)
 		
 		if not $AnimationPlayer.current_animation == "scare":
 			move_and_slide(move + dash)
@@ -122,7 +125,7 @@ func scare(body):
 func possess(vessel):
 	if not possessing:
 		if vessel.is_in_group("vessel"):
-			if vessel.state == Game.SCARED:
+			if vessel.state == Game.SCARED or vessel.state == Game.DIZZY:
 				possessing = vessel
 				vessel.state = Game.POSSESSED
 				move = Vector2(0,0)

@@ -17,5 +17,10 @@ func _ready():
 
 
 func _on_Button_button_up():
-	get_tree().change_scene("res://scenes/main1.tscn")
+	get_tree().change_scene("res://scenes/levels/tutorial.tscn")
+	pass # Replace with function body.
+
+
+func _on_Button2_button_up():
+	get_tree().quit()
 	pass # Replace with function body.

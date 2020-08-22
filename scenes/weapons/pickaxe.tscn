@@ -1,11 +1,15 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://sprites/others/headstone.png" type="Texture" id=1]
-[ext_resource path="res://scripts/others/headstone.gd" type="Script" id=2]
+[ext_resource path="res://sprites/weapons/pickaxe.png" type="Texture" id=1]
+[ext_resource path="res://scripts/weapons/pickaxe.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 5.97224, 1 )
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 3.78953, 5.41008 )
+
+[sub_resource type="Animation" id=3]
 resource_name = "idle"
 loop = true
 tracks/0/type = "value"
@@ -21,22 +25,30 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 0.466667, 1, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[node name="headstone" type="StaticBody2D"]
-scale = Vector2( 1.25, 1.25 )
+[node name="pickaxe" type="KinematicBody2D"]
+scale = Vector2( 2.5, 2.5 )
 collision_layer = 0
+collision_mask = 3
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="CollisionShape2D"]
-scale = Vector2( 2, 2 )
-hframes = 2
+position = Vector2( 3.59852, 0 )
 
 [node name="Sprite2" type="Sprite" parent="CollisionShape2D/Sprite"]
+modulate = Color( 1, 0.937255, 1, 1 )
+position = Vector2( -3.59852, 0 )
+rotation = 0.785397
 texture = ExtResource( 1 )
-hframes = 2
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2( 4.54174, 0 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "idle"
-anims/idle = SubResource( 2 )
+anims/idle = SubResource( 3 )

@@ -6,10 +6,10 @@ var state = Game.SCARED
 
 var move = Vector2()
 var dash = Vector2()
-var speed = 20
-var dashSpeed = 500
+var speed = 15
+var dashSpeed = 300
 
-const abilityDelay = 1
+const abilityDelay = 0.75
 var abilityTimer = 0
 
 # Called when the node enters the scene tree for the first time.
@@ -36,10 +36,11 @@ func _physics_process(delta):
 				abilityTimer = abilityDelay
 		
 		move_and_slide(move + dash)
-		if dash.length() > speed:
+		if dash.length() > 100:
 			for body in $Area2D.get_overlapping_bodies():
-				if body.is_in_group("alive"):
-					body.die()
+				if body.is_in_group("rock"):
+					body.remove()
+					dash = dash*0.5
 		
 		
 		if dash.length() > speed:

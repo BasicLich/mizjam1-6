@@ -34,8 +34,8 @@ func _physics_process(delta):
 		$CollisionShape2D/Sprite/Line2D.points = PoolVector2Array([Vector2(0,0), body.global_position - global_position])
 		$CollisionShape2D/Sprite/Line2D.visible = not body.is_in_group("headstone")
 		if body.is_in_group("headstone"):
-			move = (body.global_position+Vector2(0,-32) - global_position).normalized() * speed
-			if global_position.distance_to(body.global_position+Vector2(0,-32)) > 5:
+			move = (body.global_position+Vector2(0,-32) - global_position).normalized() * 100
+			if global_position.distance_to(body.global_position+Vector2(0,-32)) > 2:
 				move_and_slide(move)
 		else:
 			if body.state == Game.POSSESSED:

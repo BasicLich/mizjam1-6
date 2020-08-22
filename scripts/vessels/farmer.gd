@@ -68,14 +68,14 @@ func possessed(delta):
 	
 	#MOVE
 	move = Vector2(0,0)
-	if Input.is_action_pressed("mouseL"):
+	if Input.is_action_pressed("mouseR"):
 		if get_global_mouse_position().distance_to(get_global_position()) > 20:
 			move = (get_global_mouse_position() - get_global_position()).normalized() * speed
 	move_and_slide(move)
 	
 	#SAY 'Hey!'
 	abilityTimer = clamp(abilityTimer - delta, 0, abilityDelay)
-	if abilityTimer <= 0 and Input.is_action_just_pressed("mouseR"):
+	if abilityTimer <= 0 and Input.is_action_just_pressed("mouseL"):
 		abilityTimer = abilityDelay
 		print("'Hey!'")
 		for body in $Area2D.get_overlapping_bodies():
@@ -119,11 +119,9 @@ func get_curious(where):
 
 
 func be_scared():
-	if state == Game.IDLE or state == Game.CURIOUS or state == Game.SCARED:
+	if state == Game.IDLE or state == Game.CURIOUS:
 		var nearChurch = false
 		for body in $Area2D.get_overlapping_bodies():
-			if body.is_in_group("church"):
-				print(body.is_in_group("church"))
 			nearChurch = nearChurch or body.is_in_group("church")
 		if not nearChurch:
 			state = Game.SCARED
@@ -142,6 +140,7 @@ func die():
 func leave_soul():
 	var soul = load("res://scenes/soul.tscn").instance()
 	soul.human = is_in_group("human")
+	soul.body = self
 	soul.bodyName = name
 	soul.color = color
 	soul.global_position = global_position

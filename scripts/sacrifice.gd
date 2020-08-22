@@ -3,8 +3,9 @@ extends Area2D
 
 # Declare member variables here. Examples:
 export var wanted = {}
-
 var sacrificed = {}
+
+export var destination: String = "menu" 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -16,7 +17,9 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if wanted.hash() == sacrificed.hash():
-		print("WIN")
+		$Area2D.visible = true
+		if $Area2D.overlaps_body(Game.get_player()) and not Game.get_player().possessing:
+			get_tree().change_scene("res://scenes/levels/" + destination + ".tscn")
 	pass
 
 func sacrifice(body):

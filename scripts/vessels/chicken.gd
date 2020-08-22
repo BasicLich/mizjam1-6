@@ -71,7 +71,7 @@ func possessed(delta):
 	
 	#MOVE
 	move = Vector2(0,0)
-	if Input.is_action_pressed("mouseL"):
+	if Input.is_action_pressed("mouseR"):
 		if get_global_mouse_position().distance_to(get_global_position()) > 20:
 			move = (get_global_mouse_position() - get_global_position()).normalized() * speed
 	move_and_slide(move)
@@ -80,7 +80,7 @@ func possessed(delta):
 	#SAY 'CHICK'
 	abilityTimer = clamp(abilityTimer - delta, 0, abilityDelay)
 	if abilityTimer <= 0:
-		if Input.is_action_just_pressed("mouseR"):
+		if Input.is_action_just_pressed("mouseL"):
 			$AudioStreamPlayer2D.play()
 			abilityTimer = abilityDelay
 			call_farmer()
@@ -131,7 +131,10 @@ func _on_Timer_timeout():
 			$Timer.wait_time = randf()/2
 			call_farmer()
 		elif state == Game.CURIOUS:
-			path = Game.get_main().get_node("Navigation2D").get_simple_path(global_position, Game.get_main().get_node(following).global_position, false)
+			if following != '':
+				path = Game.get_main().get_node("Navigation2D").get_simple_path(global_position, Game.get_main().get_node(following).global_position, false)
+			else:
+				state = Game.IDLE
 			$Timer.wait_time = 1
 		else:
 			move = Vector2(((randf()-0.5)*2), ((randf()-0.5)*2)).normalized()*speed
@@ -157,6 +160,7 @@ func die():
 func leave_soul():
 	var soul = load("res://scenes/soul.tscn").instance()
 	soul.human = is_in_group("human")
+	soul.body = self
 	soul.bodyName = name
 	soul.color = color
 	soul.global_position = global_position
