@@ -15,6 +15,7 @@ func remove():
 	$CollisionShape2D/Sprite.visible = false
 	$CollisionShape2D.disabled = true
 	$Particles2D.emitting = true
+	$Destroy.play()
 	$Timer.wait_time = $Particles2D.lifetime
 	$Timer.start()
 

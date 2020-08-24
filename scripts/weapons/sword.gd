@@ -34,6 +34,7 @@ func _physics_process(delta):
 			if Input.is_action_just_pressed("mouseL"):
 				dash = (get_global_mouse_position() - get_global_position()).normalized() * dashSpeed
 				abilityTimer = abilityDelay
+				$Dash.play()
 		
 		move_and_slide(move + dash)
 		if dash.length() > speed:

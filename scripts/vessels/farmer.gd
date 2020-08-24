@@ -11,9 +11,13 @@ var knockback = Vector2(0,0)
 const abilityDelay = 1
 var abilityTimer = 0
 
+const scaredDelay = 4
+var scaredTimer = 0
+
 var state = Game.IDLE
 
 var path = PoolVector2Array()
+var scaredPlace = Vector2()
 
 var color = Game.rand_color()
 
@@ -46,7 +50,7 @@ func _physics_process(delta):
 		Game.CURIOUS:
 			curious()
 		Game.SCARED:
-			scared()
+			scared(delta)
 	pass
 
 func idle():
@@ -77,7 +81,8 @@ func possessed(delta):
 	abilityTimer = clamp(abilityTimer - delta, 0, abilityDelay)
 	if abilityTimer <= 0 and Input.is_action_just_pressed("mouseL"):
 		abilityTimer = abilityDelay
-		print("'Hey!'")
+		$call.play()
+		$scared.visible = true
 		for body in $Area2D.get_overlapping_bodies():
 			if body.is_in_group("chicken"):
 				body.get_curious(name)
@@ -95,18 +100,35 @@ func curious():
 func _on_Timer_timeout():
 	#NPC MOVEMENT
 	if state != Game.POSSESSED:
-		move = Vector2(((randf()-0.5)*2), ((randf()-0.5)*2)).normalized()*speed
-		$Timer.wait_time = randf()*1
+		if state == Game.SCARED:
+			move = Vector2(((randf()-0.5)*2), ((randf()-0.5)*2)).normalized()*speed*2.5
+			$Timer.wait_time = randf()/2
+		else:
+			move = Vector2(((randf()-0.5)*2), ((randf()-0.5)*2)).normalized()*speed
+			$Timer.wait_time = randf()*1
 	pass # Replace with function body.
 
 
-func scared():
-	move_and_slide((path[0]-global_position).normalized()*speed)
-	if path[0].distance_to(global_position) <= 32:
-		path.remove(0)
-	if len(path) == 0:
-		Game.get_main().get_node("church").spawn_priest()
-		state = Game.IDLE
+func scared(delta):
+	for body in $Area2D.get_overlapping_bodies():
+		if body.is_in_group("priest"):
+			if body.state != Game.ANGRY and body.state != Game.CURIOUS and global_position.distance_to(body.global_position) < 100:
+				body.get_curious(scaredPlace)
+	
+	if Game.get_main().has_node("church"):
+		move_and_slide((path[0]-global_position).normalized()*speed)
+		if path[0].distance_to(global_position) <= 32:
+			path.remove(0)
+		if len(path) == 0:
+			Game.get_main().get_node("church").spawn_priest(scaredPlace)
+			state = Game.IDLE
+	else:
+		$CollisionShape2D/Sprite.flip_h = move.x < 0
+		scaredTimer = clamp(scaredTimer - delta, 0, scaredDelay)
+		if scaredTimer == 0:
+			state = Game.IDLE
+		move = move*0.99
+		move_and_slide(move)
 	
 func get_curious(where):
 	if state == Game.IDLE or state == Game.CURIOUS:
@@ -119,13 +141,22 @@ func get_curious(where):
 
 
 func be_scared():
-	if state == Game.IDLE or state == Game.CURIOUS:
-		var nearChurch = false
-		for body in $Area2D.get_overlapping_bodies():
-			nearChurch = nearChurch or body.is_in_group("church")
-		if not nearChurch:
+	if state == Game.IDLE or state == Game.CURIOUS or state == Game.SCARED:
+		scaredPlace = Game.get_player().global_position
+		if Game.get_main().has_node("church"):
+			var nearChurch = false
+			for body in $Area2D.get_overlapping_bodies():
+				nearChurch = nearChurch or body.is_in_group("church")
+			if not nearChurch:
+				if state != Game.SCARED:
+					state = Game.SCARED
+					path = Game.get_main().get_node("Navigation2D").get_simple_path(global_position, Game.get_main().get_node("church").global_position, false)
+		else:
 			state = Game.SCARED
-			path = Game.get_main().get_node("Navigation2D").get_simple_path(global_position, Game.get_main().get_node("church").global_position, false)
+			scaredTimer = scaredDelay
+			$Timer.stop()
+			$Timer.wait_time = randf()/2
+			$Timer.start()
 
 func die():
 	var headstone = load("res://scenes/others/headstone.tscn").instance()
@@ -133,9 +164,14 @@ func die():
 	headstone.global_position = global_position
 	Game.get_main().add_child(headstone)
 	if state != Game.DIZZY:
-		leave_soul()
+		var soul = load("res://scenes/soul.tscn").instance()
+		soul.human = is_in_group("human")
+		soul.body = headstone
+		soul.bodyName = headstone.name
+		soul.color = color
+		soul.global_position = global_position
+		Game.get_main().add_child(soul)
 	Game.get_sacrifice().sacrifice(self)
-	queue_free()
 
 func leave_soul():
 	var soul = load("res://scenes/soul.tscn").instance()

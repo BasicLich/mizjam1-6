@@ -22,7 +22,7 @@ func _on_fireball_body_entered(body):
 		if Game.get_player().possessing and not Game.get_player().possessing.is_in_group("headstone"):
 			Game.get_player().depossess()
 		elif not Game.get_player().possessing:
-			get_tree().change_scene("res://scenes/levels/menu.tscn")
+			Game.get_main().get_node("camera").player_die()
 	queue_free()
 #	if body.name != dadName and not body.is_in_group("priest"):
 #		if body.is_in_group("vessel") and body.state == Game.POSSESSED:

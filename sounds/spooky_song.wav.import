@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/spooky_song.wav-c3b098a4348b2ef8ba1409aba52a584e.sample"
+
+[deps]
+
+source_file="res://sounds/spooky_song.wav"
+dest_files=[ "res://.import/spooky_song.wav-c3b098a4348b2ef8ba1409aba52a584e.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

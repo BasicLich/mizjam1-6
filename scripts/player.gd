@@ -54,6 +54,7 @@ func _physics_process(delta):
 			if Input.is_action_just_pressed("mouseL"):
 				dash = (get_global_mouse_position() - get_global_position()).normalized() * dashSpeed
 				dashTimer = dashDelay
+				$Audio/Dash.play()
 				for body in $PossessionArea.get_overlapping_bodies():
 					if not possessing:
 						possess(body)
@@ -61,16 +62,16 @@ func _physics_process(delta):
 		#SCARE
 		if Input.is_action_just_pressed("space"):
 			$AnimationPlayer.play("scare")
+			$Audio/Scare.play()
 			$ScaringTimer.start()
 		if $AnimationPlayer.current_animation == "scare":
-			dashTimer = dashDelay
+#			dashTimer = dashDelay
 			for body in $ScaringArea.get_overlapping_bodies():
 				scare(body)
 		
 		
 		#GOING THROUGH WALLS
-#		set_collision_layer_bit(1, dash.length() <= 100 and not possessing)
-#		set_collision_mask_bit(1, dash.length() <= 100 and not possessing)
+		set_collision_mask_bit(9, dash.length() <= 100 and not possessing)
 		
 		if not $AnimationPlayer.current_animation == "scare":
 			move_and_slide(move + dash)
@@ -126,13 +127,14 @@ func possess(vessel):
 	if not possessing:
 		if vessel.is_in_group("vessel"):
 			if vessel.state == Game.SCARED or vessel.state == Game.DIZZY:
+				if vessel.is_in_group("alive") and vessel.state == Game.SCARED:
+					vessel.leave_soul()
 				possessing = vessel
 				vessel.state = Game.POSSESSED
 				move = Vector2(0,0)
 				dash = Vector2(0,0)
 				vessel.get_node("CollisionShape2D/Sprite").modulate = Color(1,0,1)
-				if vessel.is_in_group("alive"):
-					vessel.leave_soul()
+				$Audio/Possess.play()
 				if not vessel.is_in_group("headstone"):
 					vessel.abilityTimer = vessel.abilityDelay
 
@@ -145,8 +147,10 @@ func depossess():
 	possessing.get_node("CollisionShape2D/Sprite").modulate = Color(1,1,1)
 	possessing = null
 	dashTimer = dashDelay
+	$Audio/Depossess.play()
 	pass
 
 func _on_Timer_timeout():
 	$AnimationPlayer.play("idle")
+	$Audio/Scare.stop()
 	pass # Replace with function body.

@@ -38,9 +38,14 @@ func _physics_process(delta):
 	$scared.visible = state == Game.SCARED
 	$angry.visible = state == Game.ANGRY
 	
-	if global_position.distance_to(Game.get_player().global_position) <= 320 and (state == Game.IDLE or state == Game.CURIOUS):
-		state = Game.ANGRY
-		path = Game.get_main().get_node("Navigation2D").get_simple_path(global_position, Game.get_player().global_position, false)
+	if state != Game.ANGRY:
+		for body in $Area2D.get_overlapping_bodies():
+			if body == Game.get_player():
+				if not Game.get_player().possessing or (Game.get_player().possessing and Game.get_player().possessing.is_in_group("weapon")) or (Game.get_player().possessing and state == Game.CURIOUS):
+					$RayCast.cast_to = Game.get_player().global_position - global_position
+					$RayCast.force_raycast_update()
+					if $RayCast.get_collider() == Game.get_player():
+						state = Game.ANGRY
 	
 	match state:
 		Game.POSSESSED:
@@ -71,6 +76,8 @@ func dizzy():
 	pass
 
 func possessed(delta):
+	Game.get_player().depossess
+	
 	$CollisionShape2D/Sprite.flip_h = not get_global_mouse_position().x > get_global_position().x
 	$AnimationPlayer.play("idle")
 	
@@ -93,11 +100,18 @@ func possessed(delta):
 
 func curious():
 	move_and_slide((path[0]-global_position).normalized()*speed)
+	if len(path) < 2:
+		state = Game.IDLE
 	if path[0].distance_to(global_position) <= 32:
 		path.remove(0)
 	pass
 
 func angry():
+	$RayCast.cast_to = Game.get_player().global_position - global_position
+	$RayCast.force_raycast_update()
+	if $RayCast.get_collider() != Game.get_player():
+		get_curious(Game.get_player().global_position)
+	
 	if len(path) > 2 and global_position.distance_to(Game.get_player().global_position) > 32:
 		move_and_slide((path[0]-global_position).normalized()*speed)
 		if path[0].distance_to(global_position) <= 32:
@@ -130,17 +144,19 @@ func _on_Timer_timeout():
 	pass # Replace with function body.
 
 func get_curious(where):
-	if state == Game.IDLE or state == Game.CURIOUS:
+	if state == Game.IDLE or state == Game.CURIOUS or state == Game.ANGRY:
 		state = Game.CURIOUS
 		path = Game.get_main().get_node("Navigation2D").get_simple_path(global_position, where, false)
 
 func be_scared():
+	state = Game.ANGRY
 	if state == Game.IDLE:
 		scaredTimer = scaredDelay
 		state = Game.SCARED
 		$Timer.start(0.1)
 
 func cast_fireball(target):
+	$fire.play()
 	var fireball = load("res://scenes/others/fireball.tscn").instance()
 	fireball.global_position = global_position
 	fireball.look_at(target)
@@ -154,9 +170,14 @@ func die():
 	headstone.global_position = global_position
 	Game.get_main().add_child(headstone)
 	if state != Game.DIZZY:
-		leave_soul()
+		var soul = load("res://scenes/soul.tscn").instance()
+		soul.human = is_in_group("human")
+		soul.body = headstone
+		soul.bodyName = headstone.name
+		soul.color = color
+		soul.global_position = global_position
+		Game.get_main().add_child(soul)
 	Game.get_sacrifice().sacrifice(self)
-	queue_free()
 
 func leave_soul():
 	var soul = load("res://scenes/soul.tscn").instance()

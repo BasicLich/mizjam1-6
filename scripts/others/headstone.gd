@@ -6,6 +6,8 @@ var state = Game.SCARED
 func _ready():
 	add_to_group("vessel")
 	add_to_group("headstone")
+	$Particles2D.emitting = true
+	$Die.play()
 	pass # Replace with function body.
 
 

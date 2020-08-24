@@ -1,8 +1,12 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scripts/menu.gd" type="Script" id=1]
 [ext_resource path="res://font/new_dynamicfont2.tres" type="DynamicFont" id=2]
 [ext_resource path="res://font/shlop rg.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://sounds/button.wav" type="AudioStream" id=4]
+[ext_resource path="res://sounds/menu_song.wav" type="AudioStream" id=5]
+[ext_resource path="res://sprites/soul.png" type="Texture" id=6]
+[ext_resource path="res://sprites/ghost_anim.png" type="Texture" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 size = 88
@@ -10,8 +14,13 @@ outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 3 )
 
-[sub_resource type="Animation" id=2]
-resource_name = "idle"
+[sub_resource type="DynamicFont" id=2]
+size = 33
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 3 )
+
+[sub_resource type="Animation" id=3]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("CenterContainer/Control/Label:modulate")
@@ -25,9 +34,176 @@ tracks/0/keys = {
 "update": 0,
 "values": [ Color( 1, 0, 1, 1 ), Color( 1, 0.784314, 1, 1 ), Color( 1, 0, 1, 1 ) ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite2:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sprite3:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Sprite4:frame")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Sprite5:frame")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "idle"
+length = 6.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2, 3, 4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -354.698, -134.695 ), Vector2( -226.882, 67.1197 ), Vector2( 0.160217, -131.332 ), Vector2( 203.097, -26.5001 ), Vector2( 55.3791, 141.399 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite2:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1, 2, 3, 4, 5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -446.738, 196.399 ), Vector2( -228.98, 299.666 ), Vector2( 258.168, 162.726 ), Vector2( 479.293, 45.4282 ), Vector2( 280.617, -285.885 ), Vector2( -323.267, -271.48 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite5:position")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1, 2, 3, 4, 5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -514.086, -227.891 ), Vector2( -323.267, -135.849 ), Vector2( -109.999, -288.953 ), Vector2( 114.493, -132.258 ), Vector2( 208.031, -22.7053 ), Vector2( -173.231, -125.298 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sprite3:position")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 1, 2, 3, 4, 5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 345.72, -64.0117 ), Vector2( 233.474, 43.7446 ), Vector2( 541.029, 111.99 ), Vector2( 101.585, 222.889 ), Vector2( -223.368, 122.766 ), Vector2( 119.544, -121.033 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Sprite4:position")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 1, 2, 3, 4, 5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 401.843, 158.236 ), Vector2( 235.719, 243.543 ), Vector2( -22.8963, 177.093 ), Vector2( -293.859, 107.276 ), Vector2( 155.8, 276.917 ), Vector2( 388.823, 188.393 ) ]
+}
+
+[sub_resource type="Shader" id=5]
+code = "shader_type canvas_item;
+render_mode unshaded;
+
+uniform sampler2D displace : hint_albedo;
+uniform float dispAmt: hint_range(0,0.1);
+uniform float abberationAmtX: hint_range(0,0.1);
+uniform float abberationAmtY: hint_range(0,0.1);
+uniform float dispSize: hint_range(0.1, 2.0);
+uniform float maxAlpha : hint_range(0.1,1.0);
+
+void fragment()
+{
+	//displace effect
+	vec4 disp = texture(displace, SCREEN_UV * dispSize);
+	vec2 newUV = SCREEN_UV + disp.xy * dispAmt;
+	//abberation
+	COLOR.r = texture(SCREEN_TEXTURE, newUV - vec2(abberationAmtX,abberationAmtY)).r; 
+	COLOR.g = texture(SCREEN_TEXTURE, newUV).g; 
+	COLOR.b = texture(SCREEN_TEXTURE, newUV + vec2(abberationAmtX,abberationAmtY)).b;
+	COLOR.a = texture(SCREEN_TEXTURE, newUV).a * maxAlpha;
+	}"
+custom_defines = ""
+
+[sub_resource type="ShaderMaterial" id=6]
+shader = SubResource( 5 )
+shader_param/dispAmt = 0.002
+shader_param/abberationAmtX = 0.003
+shader_param/abberationAmtY = 0.001
+shader_param/dispSize = 0.1
+shader_param/maxAlpha = 0.468
 
 [node name="Menu" type="Control"]
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = -1397.0
+margin_top = -990.0
+margin_right = 1565.0
+margin_bottom = 1198.0
+color = Color( 0.113725, 0.101961, 0.0784314, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -37,6 +213,8 @@ current = true
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchor_right = 0.111
+margin_top = -77.0
+margin_bottom = -77.0
 use_top_left = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -45,13 +223,26 @@ __meta__ = {
 [node name="Control" type="Control" parent="CenterContainer"]
 
 [node name="Label" type="Label" parent="CenterContainer/Control"]
-modulate = Color( 1, 0.392157, 1, 1 )
+modulate = Color( 1, 0.627451, 1, 1 )
 margin_left = -270.739
 margin_top = -186.163
 margin_right = 270.261
 margin_bottom = -80.1634
 custom_fonts/font = SubResource( 1 )
 text = "Scare my soul out"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="credit" type="Label" parent="CenterContainer/Control"]
+modulate = Color( 1, 0.392157, 1, 1 )
+margin_left = -274.322
+margin_top = 141.576
+margin_right = 283.678
+margin_bottom = 247.576
+custom_fonts/font = SubResource( 2 )
+text = "Creator: Bode Lord"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -71,23 +262,384 @@ __meta__ = {
 margin_right = 115.0
 margin_bottom = 59.0
 custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.780392, 0.145098, 0.145098, 1 )
 text = "PLAY"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button2" type="Button" parent="CenterContainer/Control/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/Control/VBoxContainer"]
 margin_top = 63.0
 margin_right = 115.0
-margin_bottom = 122.0
+margin_bottom = 86.0
+custom_constants/separation = 23
+
+[node name="Button2" type="Button" parent="CenterContainer/Control/VBoxContainer"]
+margin_top = 90.0
+margin_right = 115.0
+margin_bottom = 149.0
 custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.8, 0.105882, 0.105882, 1 )
 text = "QUIT"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Levels" type="Control" parent="CenterContainer"]
+visible = false
+
+[node name="Label" type="Label" parent="CenterContainer/Levels"]
+modulate = Color( 1, 0.392157, 1, 1 )
+margin_left = -248.086
+margin_top = -186.163
+margin_right = 292.914
+margin_bottom = -80.163
+custom_fonts/font = SubResource( 1 )
+text = "Choose level"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Levels"]
+margin_left = -210.172
+margin_top = -20.6697
+margin_right = 218.828
+margin_bottom = 101.33
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tutorial" type="Button" parent="CenterContainer/Levels/VBoxContainer"]
+margin_right = 471.0
+margin_bottom = 59.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.8, 0.105882, 0.105882, 1 )
+text = "Tutorial"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/Levels/VBoxContainer"]
+margin_top = 63.0
+margin_right = 471.0
+margin_bottom = 74.0
+custom_constants/separation = 11
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="CenterContainer/Levels/VBoxContainer"]
+margin_top = 78.0
+margin_right = 471.0
+margin_bottom = 137.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/Levels/VBoxContainer/CenterContainer"]
+margin_left = 7.0
+margin_right = 463.0
+margin_bottom = 59.0
+
+[node name="Level1" type="Button" parent="CenterContainer/Levels/VBoxContainer/CenterContainer/HBoxContainer"]
+margin_right = 121.0
+margin_bottom = 59.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.8, 0.105882, 0.105882, 1 )
+text = "Level1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSeparator3" type="VSeparator" parent="CenterContainer/Levels/VBoxContainer/CenterContainer/HBoxContainer"]
+margin_left = 125.0
+margin_right = 157.0
+margin_bottom = 59.0
+custom_constants/separation = 32
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level2" type="Button" parent="CenterContainer/Levels/VBoxContainer/CenterContainer/HBoxContainer"]
+margin_left = 161.0
+margin_right = 289.0
+margin_bottom = 59.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.8, 0.105882, 0.105882, 1 )
+text = "Level2"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSeparator2" type="VSeparator" parent="CenterContainer/Levels/VBoxContainer/CenterContainer/HBoxContainer"]
+margin_left = 293.0
+margin_right = 325.0
+margin_bottom = 59.0
+custom_constants/separation = 32
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level3" type="Button" parent="CenterContainer/Levels/VBoxContainer/CenterContainer/HBoxContainer"]
+margin_left = 329.0
+margin_right = 456.0
+margin_bottom = 59.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.780392, 0.145098, 0.145098, 1 )
+text = "Level3"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator3" type="HSeparator" parent="CenterContainer/Levels/VBoxContainer"]
+margin_top = 141.0
+margin_right = 471.0
+margin_bottom = 152.0
+custom_constants/separation = 11
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer2" type="CenterContainer" parent="CenterContainer/Levels/VBoxContainer"]
+margin_top = 156.0
+margin_right = 471.0
+margin_bottom = 215.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/Levels/VBoxContainer/CenterContainer2"]
+margin_left = 2.0
+margin_right = 468.0
+margin_bottom = 59.0
+
+[node name="Level4" type="Button" parent="CenterContainer/Levels/VBoxContainer/CenterContainer2/HBoxContainer"]
+margin_right = 126.0
+margin_bottom = 59.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.8, 0.105882, 0.105882, 1 )
+text = "Level4"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSeparator3" type="VSeparator" parent="CenterContainer/Levels/VBoxContainer/CenterContainer2/HBoxContainer"]
+margin_left = 130.0
+margin_right = 162.0
+margin_bottom = 59.0
+custom_constants/separation = 32
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level5" type="Button" parent="CenterContainer/Levels/VBoxContainer/CenterContainer2/HBoxContainer"]
+margin_left = 166.0
+margin_right = 294.0
+margin_bottom = 59.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.8, 0.105882, 0.105882, 1 )
+text = "Level5"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSeparator2" type="VSeparator" parent="CenterContainer/Levels/VBoxContainer/CenterContainer2/HBoxContainer"]
+margin_left = 298.0
+margin_right = 330.0
+margin_bottom = 59.0
+custom_constants/separation = 32
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level6" type="Button" parent="CenterContainer/Levels/VBoxContainer/CenterContainer2/HBoxContainer"]
+margin_left = 334.0
+margin_right = 466.0
+margin_bottom = 59.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.780392, 0.145098, 0.145098, 1 )
+text = "Level6"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator4" type="HSeparator" parent="CenterContainer/Levels/VBoxContainer"]
+margin_top = 219.0
+margin_right = 471.0
+margin_bottom = 230.0
+custom_constants/separation = 11
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer3" type="CenterContainer" parent="CenterContainer/Levels/VBoxContainer"]
+margin_top = 234.0
+margin_right = 471.0
+margin_bottom = 293.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/Levels/VBoxContainer/CenterContainer3"]
+margin_right = 470.0
+margin_bottom = 59.0
+
+[node name="Level7" type="Button" parent="CenterContainer/Levels/VBoxContainer/CenterContainer3/HBoxContainer"]
+margin_right = 127.0
+margin_bottom = 59.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.8, 0.105882, 0.105882, 1 )
+text = "Level7"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSeparator3" type="VSeparator" parent="CenterContainer/Levels/VBoxContainer/CenterContainer3/HBoxContainer"]
+margin_left = 131.0
+margin_right = 163.0
+margin_bottom = 59.0
+custom_constants/separation = 32
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level8" type="Button" parent="CenterContainer/Levels/VBoxContainer/CenterContainer3/HBoxContainer"]
+margin_left = 167.0
+margin_right = 299.0
+margin_bottom = 59.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.8, 0.105882, 0.105882, 1 )
+text = "Level8"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSeparator2" type="VSeparator" parent="CenterContainer/Levels/VBoxContainer/CenterContainer3/HBoxContainer"]
+margin_left = 303.0
+margin_right = 335.0
+margin_bottom = 59.0
+custom_constants/separation = 32
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Level9" type="Button" parent="CenterContainer/Levels/VBoxContainer/CenterContainer3/HBoxContainer"]
+margin_left = 339.0
+margin_right = 470.0
+margin_bottom = 59.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.780392, 0.145098, 0.145098, 1 )
+text = "Level9"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator2" type="HSeparator" parent="CenterContainer/Levels/VBoxContainer"]
+margin_top = 297.0
+margin_right = 471.0
+margin_bottom = 308.0
+custom_constants/separation = 11
+
+[node name="Infinite" type="Button" parent="CenterContainer/Levels/VBoxContainer"]
+margin_top = 312.0
+margin_right = 471.0
+margin_bottom = 371.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.8, 0.105882, 0.105882, 1 )
+text = "Infinite"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "idle"
-anims/idle = SubResource( 2 )
+anims/idle = SubResource( 3 )
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+anims/idle = SubResource( 4 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+pitch_scale = 0.5
+autoplay = true
+
+[node name="button" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = -20.0
+pitch_scale = 0.5
+autoplay = true
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+material = SubResource( 6 )
+margin_left = -1502.9
+margin_top = -1112.0
+margin_right = 1779.1
+margin_bottom = 1219.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+modulate = Color( 1, 0, 1, 1 )
+position = Vector2( -354.698, -134.695 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 7 )
+hframes = 2
+frame = 1
+
+[node name="Sprite2" type="Sprite" parent="."]
+modulate = Color( 0.686275, 0.596078, 0.184314, 1 )
+self_modulate = Color( 1, 1, 1, 0.462745 )
+position = Vector2( -446.738, 196.399 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 6 )
+hframes = 2
+frame = 1
+
+[node name="Sprite5" type="Sprite" parent="."]
+modulate = Color( 0.858824, 0.396078, 0.396078, 1 )
+self_modulate = Color( 1, 1, 1, 0.462745 )
+position = Vector2( -514.086, -227.891 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 6 )
+hframes = 2
+frame = 1
+
+[node name="Sprite3" type="Sprite" parent="."]
+modulate = Color( 0.384314, 0.333333, 0.835294, 1 )
+self_modulate = Color( 1, 1, 1, 0.462745 )
+position = Vector2( 345.72, -64.0117 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 6 )
+hframes = 2
+frame = 1
+
+[node name="Sprite4" type="Sprite" parent="."]
+modulate = Color( 0.141176, 0.909804, 0.458824, 1 )
+self_modulate = Color( 1, 1, 1, 0.462745 )
+position = Vector2( 401.843, 158.236 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 6 )
+hframes = 2
+frame = 1
 [connection signal="button_up" from="CenterContainer/Control/VBoxContainer/Button" to="." method="_on_Button_button_up"]
+[connection signal="mouse_entered" from="CenterContainer/Control/VBoxContainer/Button" to="." method="_on_Button_mouse_entered"]
 [connection signal="button_up" from="CenterContainer/Control/VBoxContainer/Button2" to="." method="_on_Button2_button_up"]
+[connection signal="mouse_entered" from="CenterContainer/Control/VBoxContainer/Button2" to="." method="_on_Button2_mouse_entered"]
+[connection signal="button_up" from="CenterContainer/Levels/VBoxContainer/Tutorial" to="." method="_on_Tutorial_button_up"]
+[connection signal="mouse_entered" from="CenterContainer/Levels/VBoxContainer/Tutorial" to="." method="_on_Tutorial_mouse_entered"]
+[connection signal="button_up" from="CenterContainer/Levels/VBoxContainer/CenterContainer/HBoxContainer/Level1" to="." method="_on_Level1_button_up"]
+[connection signal="mouse_entered" from="CenterContainer/Levels/VBoxContainer/CenterContainer/HBoxContainer/Level1" to="." method="_on_Level1_mouse_entered"]
+[connection signal="button_up" from="CenterContainer/Levels/VBoxContainer/CenterContainer/HBoxContainer/Level2" to="." method="_on_Level2_button_up"]
+[connection signal="mouse_entered" from="CenterContainer/Levels/VBoxContainer/CenterContainer/HBoxContainer/Level2" to="." method="_on_Level2_mouse_entered"]
+[connection signal="button_up" from="CenterContainer/Levels/VBoxContainer/CenterContainer/HBoxContainer/Level3" to="." method="_on_Level3_button_up"]
+[connection signal="mouse_entered" from="CenterContainer/Levels/VBoxContainer/CenterContainer/HBoxContainer/Level3" to="." method="_on_Level3_mouse_entered"]
+[connection signal="button_up" from="CenterContainer/Levels/VBoxContainer/CenterContainer2/HBoxContainer/Level4" to="." method="_on_Level4_button_up"]
+[connection signal="mouse_entered" from="CenterContainer/Levels/VBoxContainer/CenterContainer2/HBoxContainer/Level4" to="." method="_on_Level4_mouse_entered"]
+[connection signal="button_up" from="CenterContainer/Levels/VBoxContainer/CenterContainer2/HBoxContainer/Level5" to="." method="_on_Level5_button_up"]
+[connection signal="mouse_entered" from="CenterContainer/Levels/VBoxContainer/CenterContainer2/HBoxContainer/Level5" to="." method="_on_Level5_mouse_entered"]
+[connection signal="button_up" from="CenterContainer/Levels/VBoxContainer/CenterContainer2/HBoxContainer/Level6" to="." method="_on_Level6_button_up"]
+[connection signal="mouse_entered" from="CenterContainer/Levels/VBoxContainer/CenterContainer2/HBoxContainer/Level6" to="." method="_on_Level6_mouse_entered"]
+[connection signal="button_up" from="CenterContainer/Levels/VBoxContainer/CenterContainer3/HBoxContainer/Level7" to="." method="_on_Level7_button_up"]
+[connection signal="mouse_entered" from="CenterContainer/Levels/VBoxContainer/CenterContainer3/HBoxContainer/Level7" to="." method="_on_Level4_mouse_entered"]
+[connection signal="button_up" from="CenterContainer/Levels/VBoxContainer/CenterContainer3/HBoxContainer/Level8" to="." method="_on_Level8_button_up"]
+[connection signal="mouse_entered" from="CenterContainer/Levels/VBoxContainer/CenterContainer3/HBoxContainer/Level8" to="." method="_on_Level5_mouse_entered"]
+[connection signal="button_up" from="CenterContainer/Levels/VBoxContainer/CenterContainer3/HBoxContainer/Level9" to="." method="_on_Level9_button_up"]
+[connection signal="mouse_entered" from="CenterContainer/Levels/VBoxContainer/CenterContainer3/HBoxContainer/Level9" to="." method="_on_Level6_mouse_entered"]
+[connection signal="button_up" from="CenterContainer/Levels/VBoxContainer/Infinite" to="." method="_on_Infinite_button_up"]
+[connection signal="mouse_entered" from="CenterContainer/Levels/VBoxContainer/Infinite" to="." method="_on_Infinite_mouse_entered"]

@@ -32,6 +32,7 @@ func _ready():
 
 func _physics_process(delta):
 	$dizzy.visible = state == Game.DIZZY
+	$curious.visible = state == Game.CURIOUS
 	$scared.visible = scaredTimer > 0 or (state == Game.POSSESSED and abilityTimer > 0)
 	$CollisionShape2D/Sprite.flip_h = move.x < 0	
 	
@@ -73,7 +74,7 @@ func possessed(delta):
 	move = Vector2(0,0)
 	if Input.is_action_pressed("mouseR"):
 		if get_global_mouse_position().distance_to(get_global_position()) > 20:
-			move = (get_global_mouse_position() - get_global_position()).normalized() * speed
+			move = (get_global_mouse_position() - get_global_position()).normalized() * speed * 2
 	move_and_slide(move)
 	
 	
@@ -153,9 +154,14 @@ func die():
 	headstone.global_position = global_position
 	Game.get_main().add_child(headstone)
 	if state != Game.DIZZY:
-		leave_soul()
+		var soul = load("res://scenes/soul.tscn").instance()
+		soul.human = is_in_group("human")
+		soul.body = headstone
+		soul.bodyName = headstone.name
+		soul.color = color
+		soul.global_position = global_position
+		Game.get_main().add_child(soul)
 	Game.get_sacrifice().sacrifice(self)
-	queue_free()
 
 func leave_soul():
 	var soul = load("res://scenes/soul.tscn").instance()

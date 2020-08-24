@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/others/wood.gd" type="Script" id=1]
 [ext_resource path="res://sprites/others/wood.png" type="Texture" id=2]
+[ext_resource path="res://sounds/destroy.wav" type="AudioStream" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 21.5511, 21.951 )
@@ -15,7 +16,7 @@ initial_velocity_random = 0.5
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 scale = 4.0
-color = Color( 0.337255, 0.243137, 0.188235, 1 )
+color = Color( 0.533333, 0.439216, 0.392157, 1 )
 
 [node name="wood" type="StaticBody2D"]
 scale = Vector2( 1.5, 1.5 )
@@ -27,7 +28,7 @@ script = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="CollisionShape2D"]
-modulate = Color( 0.337255, 0.243137, 0.188235, 1 )
+modulate = Color( 0.533333, 0.439216, 0.392157, 1 )
 scale = Vector2( 3, 3 )
 texture = ExtResource( 2 )
 
@@ -41,4 +42,7 @@ process_material = SubResource( 2 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
+
+[node name="Destroy" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

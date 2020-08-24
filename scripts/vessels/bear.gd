@@ -81,6 +81,7 @@ func possessed(delta):
 			if Input.is_action_just_pressed("mouseL"):
 				dash = (get_global_mouse_position() - get_global_position()).normalized() * dashSpeed
 				abilityTimer = abilityDelay
+				$Dash.play()
 		
 	move_and_slide(move + dash)
 	if dash.length() > 100:
@@ -138,9 +139,14 @@ func die():
 	headstone.global_position = global_position
 	Game.get_main().add_child(headstone)
 	if state != Game.DIZZY:
-		leave_soul()
+		var soul = load("res://scenes/soul.tscn").instance()
+		soul.human = is_in_group("human")
+		soul.body = headstone
+		soul.bodyName = headstone.name
+		soul.color = color
+		soul.global_position = global_position
+		Game.get_main().add_child(soul)
 	Game.get_sacrifice().sacrifice(self)
-	queue_free()
 
 func leave_soul():
 	var soul = load("res://scenes/soul.tscn").instance()
